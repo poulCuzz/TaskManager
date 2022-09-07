@@ -58,18 +58,7 @@ public class TaskManager {
                     list(tasks);
                     break;
                 case "exit":
-                    FileWriter fileWriter = new FileWriter("tasks.csv", false);
-                    for (int i = 0; i < tasks.length; i++) {
-                        for (int j = 0; j < 3; j++) {
-                            if (j == 2) {
-                                fileWriter.append(StringUtils.replace(tasks[i][j], ", ", ""));
-                                break;
-                            }
-                            fileWriter.append(tasks[i][j]).append(", ");
-                        }
-                        fileWriter.append("\n");
-                    }
-                    fileWriter.close();
+                    exitAndSave(tasks);
                     System.out.println(ConsoleColors.RED + "Bye, bye");
                     break;
                 default:
@@ -140,5 +129,20 @@ public class TaskManager {
         }
         return tasks;
     }
-
+    static void exitAndSave (String[][] tasks) {
+        try (FileWriter fileWriter = new FileWriter("tasks.csv", false)) {
+            for (int i = 0; i < tasks.length; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (j == 2) {
+                        fileWriter.append(StringUtils.replace(tasks[i][j], ", ", ""));
+                        break;
+                    }
+                    fileWriter.append(tasks[i][j]).append(", ");
+                }
+                fileWriter.append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
